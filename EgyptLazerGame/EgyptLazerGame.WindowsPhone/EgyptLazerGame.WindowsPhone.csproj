@@ -88,6 +88,7 @@
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>

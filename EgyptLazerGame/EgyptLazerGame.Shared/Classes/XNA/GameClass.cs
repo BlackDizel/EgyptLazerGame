@@ -92,8 +92,7 @@ namespace EgyptLazerGame.Classes.XNA
                         if (field.IsFigureSelected())
                         {
                             var dirs = field.IsDirectionsAvailableForSelectedFigure();
-                            ui.SetControlMovePos(pos.ToVector2() * CellSize, dirs);
-                            
+                            ui.SetControlMovePos(field.SelectedFigurePosition() * CellSize, dirs);                            
                         }
                         break;
                     case UI.Action.Rotate:
