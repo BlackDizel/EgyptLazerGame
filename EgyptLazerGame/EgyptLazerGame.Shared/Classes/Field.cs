@@ -9,7 +9,7 @@ namespace EgyptLazerGame.Classes
     class Field
     {
         public static List<Figure> figures;
-        public enum FigureStepType { Move, Rotate };
+        public enum FigureStepType {None, Move, Rotate };
 
         Figure selectedFigure;
         CellObject.Direction direction;
@@ -143,6 +143,7 @@ namespace EgyptLazerGame.Classes
             ++CurrentPlayer;
             CurrentPlayer %= 2;
             selectedFigure = null;
+            StepType = FigureStepType.None;
             
             return false;
         }

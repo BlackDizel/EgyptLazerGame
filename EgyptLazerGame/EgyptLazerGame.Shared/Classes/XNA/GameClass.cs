@@ -80,7 +80,7 @@ namespace EgyptLazerGame.Classes.XNA
                 switch (ui.UIAction)
                 {
                     case UI.Action.Turn:
-                        if (field.IsFigureSelected())
+                        if (field.IsFigureSelected()&&field.StepType!=Field.FigureStepType.None)
                         {
                             field.Turn();
                             ui.SetControlMovePos(new Vector2(-CellSize * 4, 0));
