@@ -89,11 +89,17 @@ namespace EgyptLazerGame.Classes
             if (selectedFigure.FigureType == Figure.Type.sphinx) return false;
             Figure.DirectionCorrectTest(dir);
             Point newPos = Figure.CalcNewPoint(selectedFigure.Position, dir);
+            
+            //if cell is not empty and not (figure is scarab and another is pyramid or anubis)
             var f = (from c in figures where c.Position == newPos select c).FirstOrDefault();
-            if (f!=null) return false;
+            if (f!=null && !(selectedFigure.FigureType==Figure.Type.scarab && (f.FigureType== Figure.Type.pyramid||f.FigureType== Figure.Type.anubis))) 
+                return false;
+
+            //filed borders
             if (newPos.X > 9 || newPos.X < 0 || newPos.Y > 7 || newPos.Y < 0)
                 return false;
 
+            //forbiden lines. see game rules
             if (selectedFigure.PlayerID == 0)
                 if (newPos.X == 9 || (newPos.X == 1 && (newPos.Y == 0 || newPos.Y == 7)))
                     return false;
