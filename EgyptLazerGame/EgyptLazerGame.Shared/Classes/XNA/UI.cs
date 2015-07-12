@@ -142,7 +142,7 @@ namespace EgyptLazerGame.Classes.XNA
 
             
             foreach (var el in lBtnDirection)
-                sb.Draw(tBt, el, Color.White);
+                sb.Draw(tBt, el, Color.Red);
             
             sb.Draw(tBt,btnRotateLeft,Color.White); 
             sb.Draw(tBt, btnRotateRight, Color.White);

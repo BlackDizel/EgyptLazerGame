@@ -86,12 +86,14 @@ namespace EgyptLazerGame.Classes
         private bool IsDirectionAvailableForSelectedFigure(CellObject.Direction dir)
         {
             if (selectedFigure == null) throw new NullReferenceException("фигура не выбрана");
+            if (selectedFigure.FigureType == Figure.Type.sphinx) return false;
             Figure.DirectionCorrectTest(dir);
             Point newPos = Figure.CalcNewPoint(selectedFigure.Position, dir);
             var f = (from c in figures where c.Position == newPos select c).FirstOrDefault();
-            if (f==null) return true;
-            return false;
-            //также надо проверять ненахождение фигуры на краях доски
+            if (f!=null) return false;
+            if (newPos.X > 9 || newPos.X < 0 || newPos.Y > 7 || newPos.Y < 0)
+                return false;
+            return true;
         }
 
         public bool IsFigureSelected()
