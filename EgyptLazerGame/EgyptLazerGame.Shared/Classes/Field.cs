@@ -93,6 +93,14 @@ namespace EgyptLazerGame.Classes
             if (f!=null) return false;
             if (newPos.X > 9 || newPos.X < 0 || newPos.Y > 7 || newPos.Y < 0)
                 return false;
+
+            if (selectedFigure.PlayerID == 0)
+                if (newPos.X == 9 || (newPos.X == 1 && (newPos.Y == 0 || newPos.Y == 7)))
+                    return false;
+            if (selectedFigure.PlayerID == 1)
+                if (newPos.X == 0 || (newPos.X == 8 && (newPos.Y == 0 || newPos.Y == 7)))
+                    return false;
+
             return true;
         }
 
