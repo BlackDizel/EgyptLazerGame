@@ -20,6 +20,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Classes\Figure.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Classes\Player.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Classes\Ray.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Classes\XNA\MenuClass.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Classes\XNA\GameClass.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Classes\XNA\UI.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Game1.cs" />

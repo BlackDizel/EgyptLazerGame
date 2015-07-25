@@ -9,7 +9,7 @@ using System.Diagnostics;
 
 namespace EgyptLazerGame.Classes.XNA
 {
-    class GameClass:DrawableGameComponent
+    class GameClass : DrawableGameComponent
     {
         UI ui;
         SpriteBatch sb;
@@ -18,16 +18,19 @@ namespace EgyptLazerGame.Classes.XNA
         Texture2D[] tRay;
         Texture2D tSelected;
         public static MouseState oldMS;
-       
+        KeyboardState oldKS;
+
 
         public static int CellSize = 100; //минимум между 1/14 ширины и 1/8 высоты
 
-        public GameClass(Game game):base(game)
+        public GameClass(Game game)
+            : base(game)
         {
             ui = new UI();
             field = new Field();
 
             oldMS = Mouse.GetState();
+            oldKS = Keyboard.GetState();
         }
 
         protected override void LoadContent()
@@ -57,7 +60,7 @@ namespace EgyptLazerGame.Classes.XNA
             };
 
             tSelected = Game.Content.Load<Texture2D>("cell");
-            
+
             base.LoadContent();
         }
         public override void Update(GameTime gameTime)
@@ -70,6 +73,16 @@ namespace EgyptLazerGame.Classes.XNA
 
         void Input()
         {
+            KeyboardState state = Keyboard.GetState();
+
+            if (oldKS != null && oldKS.IsKeyDown(Keys.Escape))
+                if (state.IsKeyUp(Keys.Escape))
+                {
+                    Game.Components.Add(new MenuClass(Game));
+                    Game.Components.Remove(this);
+                }
+            oldKS = state;
+
             MouseState ms = Mouse.GetState();
             if ((ms.LeftButton == ButtonState.Released) && (oldMS.LeftButton == ButtonState.Pressed))
             {
@@ -80,30 +93,30 @@ namespace EgyptLazerGame.Classes.XNA
                 switch (ui.UIAction)
                 {
                     case UI.Action.Turn:
-                        if (field.IsFigureSelected()&&field.StepType!=Field.FigureStepType.None)
+                        if (field.IsFigureSelected() && field.StepType != Field.FigureStepType.None)
                         {
                             field.Turn();
                             ui.SetControlMovePos(new Vector2(-CellSize * 4, 0));
                         }
                         break;
                     case UI.Action.SelectFigure:
-                        var pos = (ms.Position.ToVector2()/CellSize).ToPoint();                                      
+                        var pos = (ms.Position.ToVector2() / CellSize).ToPoint();
                         field.SetSelectedFigure(pos);
                         if (field.IsFigureSelected())
                         {
                             var dirs = field.IsDirectionsAvailableForSelectedFigure();
-                            ui.SetControlMovePos(field.SelectedFigurePosition() * CellSize, dirs);                            
+                            ui.SetControlMovePos(field.SelectedFigurePosition() * CellSize, dirs);
                         }
                         break;
                     case UI.Action.Rotate:
-                        field.StepType=Field.FigureStepType.Rotate;
-                        field.IsClockwiseRotation  = ui.IsClockwise;
+                        field.StepType = Field.FigureStepType.Rotate;
+                        field.IsClockwiseRotation = ui.IsClockwise;
                         break;
-                    case UI.Action.Move: 
-                        field.StepType=Field.FigureStepType.Move;
+                    case UI.Action.Move:
+                        field.StepType = Field.FigureStepType.Move;
                         field.SetDirection(ui.direction);
                         break;
-                    
+
                 }
             }
 
@@ -117,7 +130,7 @@ namespace EgyptLazerGame.Classes.XNA
             //figures
             foreach (var fg in Field.figures)
             {
-                Texture2D t=null;
+                Texture2D t = null;
                 switch (fg.FigureType)
                 {
                     case Figure.Type.sphinx: t = fg.PlayerID == 0 ? tFigs[0] : tFigs[5]; break;
@@ -131,18 +144,18 @@ namespace EgyptLazerGame.Classes.XNA
                 float r = 0;
                 switch (fg.MoveDirection)
                 {
-                    case CellObject.Direction.Up:       r = 0; break;
-                    case CellObject.Direction.Right:    r = (float) (Math.PI/2.0); break;
-                    case CellObject.Direction.Down:     r = (float) Math.PI; break;
-                    case CellObject.Direction.Left:     r = -(float) (Math.PI/2.0); break;
+                    case CellObject.Direction.Up: r = 0; break;
+                    case CellObject.Direction.Right: r = (float)(Math.PI / 2.0); break;
+                    case CellObject.Direction.Down: r = (float)Math.PI; break;
+                    case CellObject.Direction.Left: r = -(float)(Math.PI / 2.0); break;
                 }
                 sb.Draw(
                     t
-                    ,position:fg.Position.ToVector2() * CellSize+new Vector2(50,50)
-                    ,origin:new Vector2(50,50)
-                    ,color:Color.White
-                    ,rotation:r
-                    );                
+                    , position: fg.Position.ToVector2() * CellSize + new Vector2(50, 50)
+                    , origin: new Vector2(50, 50)
+                    , color: Color.White
+                    , rotation: r
+                    );
             }
 
 
@@ -171,7 +184,7 @@ namespace EgyptLazerGame.Classes.XNA
                 }
             //selected figure
             if (field.IsFigureSelected())
-                sb.Draw(tSelected,field.SelectedFigurePosition()* CellSize, Color.Yellow);
+                sb.Draw(tSelected, field.SelectedFigurePosition() * CellSize, Color.Yellow);
 
 
             sb.End();
