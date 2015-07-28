@@ -15,14 +15,16 @@ namespace EgyptLazerGame.Classes.XNA
         List<Vector2> lBtnDirection;
         Vector2 btnRotateLeft, btnRotateRight, btnTurn;
         Vector2[] field;
-         
 
-        public enum Action {    Move,
-                                Rotate,
-                                Turn,
-                                SelectFigure                                
-                            }
-        
+
+        public enum Action
+        {
+            Move,
+            Rotate,
+            Turn,
+            SelectFigure
+        }
+
         public Action UIAction;
 
         public bool IsClockwise;
@@ -44,20 +46,20 @@ namespace EgyptLazerGame.Classes.XNA
                 new Vector2(13*GameClass.CellSize,2*GameClass.CellSize)
             };
 
-            btnRotateLeft = new Vector2(11*GameClass.CellSize,4*GameClass.CellSize);
-            btnRotateRight = new Vector2(13*GameClass.CellSize,4*GameClass.CellSize);
+            btnRotateLeft = new Vector2(11 * GameClass.CellSize, 4 * GameClass.CellSize);
+            btnRotateRight = new Vector2(13 * GameClass.CellSize, 4 * GameClass.CellSize);
             btnTurn = new Vector2(12 * GameClass.CellSize, 7 * GameClass.CellSize);
 
             field = new Vector2[80];
             for (int j = 0; j < 8; ++j)
                 for (int i = 0; i < 10; ++i)
-                    field[j * 10 + i] = new Vector2(i, j)*GameClass.CellSize;
+                    field[j * 10 + i] = new Vector2(i, j) * GameClass.CellSize;
         }
 
 
         public void Update(GameTime gameTime)
         {
-            
+
         }
 
         public void SetControlMovePos(Vector2 pos)
@@ -67,20 +69,20 @@ namespace EgyptLazerGame.Classes.XNA
             lBtnDirection.Add(setControlMovePos(pos, CellObject.Direction.Down));
             lBtnDirection.Add(setControlMovePos(pos, CellObject.Direction.Left));
             lBtnDirection.Add(setControlMovePos(pos, CellObject.Direction.Right));
-                         
+
             lBtnDirection.Add(setControlMovePos(pos, CellObject.Direction.Up | CellObject.Direction.Left));
             lBtnDirection.Add(setControlMovePos(pos, CellObject.Direction.Up | CellObject.Direction.Right));
             lBtnDirection.Add(setControlMovePos(pos, CellObject.Direction.Down | CellObject.Direction.Left));
             lBtnDirection.Add(setControlMovePos(pos, CellObject.Direction.Down | CellObject.Direction.Right));
         }
 
-        public void SetControlMovePos(Vector2 pos,List<CellObject.Direction> list)
+        public void SetControlMovePos(Vector2 pos, List<CellObject.Direction> list)
         {
             if (list == null) return;
             lBtnDirection.Clear();
             foreach (var el in list)
                 lBtnDirection.Add(setControlMovePos(pos, el));
- 
+
         }
 
         private Vector2 setControlMovePos(Vector2 pos, CellObject.Direction dir)
@@ -92,9 +94,9 @@ namespace EgyptLazerGame.Classes.XNA
             if (dir.HasFlag(CellObject.Direction.Down))
                 newPos += new Vector2(0, GameClass.CellSize);
             if (dir.HasFlag(CellObject.Direction.Right))
-                newPos += new Vector2(GameClass.CellSize,0);
+                newPos += new Vector2(GameClass.CellSize, 0);
             if (dir.HasFlag(CellObject.Direction.Left))
-                newPos += new Vector2(-GameClass.CellSize,0);
+                newPos += new Vector2(-GameClass.CellSize, 0);
             return newPos;
         }
 
@@ -108,7 +110,7 @@ namespace EgyptLazerGame.Classes.XNA
                 Vector2 v = (from c in lBtnDirection where c.Equals(p) select c).FirstOrDefault();
                 if (v != default(Vector2))
                 {
-                    direction = Figure.CalcDirection((SelectedFigurePos.Value*GameClass.CellSize).ToPoint(), v.ToPoint());
+                    direction = Figure.CalcDirection(PointConversion.toPoint(SelectedFigurePos.Value * GameClass.CellSize), PointConversion.toPoint(v));
                     UIAction = UI.Action.Move;
                 }
                 else if (p.Equals(btnRotateLeft))
@@ -127,12 +129,12 @@ namespace EgyptLazerGame.Classes.XNA
                 }
             }
         }
-        
+
 
         public void Load(ContentManager Content)
         {
             tBt = Content.Load<Texture2D>("cell.png");
-           
+
         }
 
         public void Draw(SpriteBatch sb)
@@ -140,11 +142,11 @@ namespace EgyptLazerGame.Classes.XNA
             foreach (var el in field)
                 sb.Draw(tBt, el, Color.White);
 
-            
+
             foreach (var el in lBtnDirection)
                 sb.Draw(tBt, el, Color.Red);
-            
-            sb.Draw(tBt,btnRotateLeft,Color.White); 
+
+            sb.Draw(tBt, btnRotateLeft, Color.White);
             sb.Draw(tBt, btnRotateRight, Color.White);
             sb.Draw(tBt, btnTurn, Color.White);
         }
