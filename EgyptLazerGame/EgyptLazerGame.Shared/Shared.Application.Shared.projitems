@@ -43,4 +43,7 @@
     <Content Include="$(MSBuildThisFileDirectory)Content\red\sphinx.png" />
     <Content Include="$(MSBuildThisFileDirectory)TODO.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)Content\Content.mgcb" />
+  </ItemGroup>
 </Project>

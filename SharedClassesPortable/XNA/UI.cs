@@ -133,7 +133,7 @@ namespace EgyptLazerGame.Classes.XNA
 
         public void Load(ContentManager Content)
         {
-            tBt = Content.Load<Texture2D>("cell.png");
+            tBt = Content.Load<Texture2D>("cell");
 
         }
 
