@@ -20,8 +20,7 @@ namespace EgyptLazerGame.Classes.XNA
         public static MouseState oldMS;
         KeyboardState oldKS;
 
-
-        public static int CellSize = 100; //минимум между 1/14 ширины и 1/8 высоты
+        public static int CellSize = 100;
 
         public GameClass(Game game)
             : base(game)
@@ -121,6 +120,7 @@ namespace EgyptLazerGame.Classes.XNA
 
             oldMS = ms;
         }
+
         public override void Draw(GameTime gameTime)
         {
             sb.Begin();
@@ -150,10 +150,10 @@ namespace EgyptLazerGame.Classes.XNA
                 }
                 sb.Draw(
                     t
-                    , position: PointConversion.toVector2(fg.Position) * CellSize + new Vector2(50, 50)
-                    , origin: new Vector2(50, 50)
+                    , origin: new Vector2((float)t.Width / 2, (float)t.Width / 2)
                     , color: Color.White
                     , rotation: r
+                    , destinationRectangle: new Rectangle(fg.Position.X * CellSize + CellSize / 2, fg.Position.Y * CellSize + CellSize / 2, CellSize, CellSize)
                     );
             }
 
@@ -164,26 +164,32 @@ namespace EgyptLazerGame.Classes.XNA
                 {
                     if (field.RayLight.Lights.IndexOf(el) == 0)
                     {
-                        sb.Draw(tRay[0], PointConversion.toVector2(el.Position) * CellSize, Color.White);
+                        sb.Draw(
+                            texture: tRay[0]
+                            , destinationRectangle: new Rectangle(el.Position.X * CellSize, el.Position.Y * CellSize, CellSize, CellSize)
+                            , color: Color.White);
                     }
                     else
                     {
                         if ((el.MoveDirection.HasFlag(Figure.Direction.Right)) ||
                             (el.MoveDirection.HasFlag(Figure.Direction.Left)))
-                            sb.Draw(texture: tRay[1],
-                                    position: PointConversion.toVector2(el.Position) * CellSize,
-                                    color: Color.White,
-                                    rotation: (float)(Math.PI / 2.0f),
-                                    origin: new Vector2(CellSize / 2, CellSize / 2));
+                            sb.Draw(texture: tRay[1]
+                                    , destinationRectangle: new Rectangle(el.Position.X * CellSize, el.Position.Y * CellSize, CellSize, CellSize)
+                                    , color: Color.White
+                                    , rotation: (float)(Math.PI / 2.0f)
+                                    , origin: new Vector2(CellSize / 2, CellSize / 2));
                         else
-                            sb.Draw(texture: tRay[1],
-                                    position: PointConversion.toVector2(el.Position) * CellSize,
-                                    color: Color.White);
+                            sb.Draw(texture: tRay[1]
+                                    , destinationRectangle: new Rectangle(el.Position.X * CellSize, el.Position.Y * CellSize, CellSize, CellSize)
+                                    , color: Color.White);
                     }
                 }
             //selected figure
             if (field.IsFigureSelected())
-                sb.Draw(tSelected, PointConversion.toVector2(field.SelectedFigurePosition()) * CellSize, Color.Yellow);
+                sb.Draw(
+                    texture: tSelected
+                    , destinationRectangle: new Rectangle(field.SelectedFigurePosition().X * CellSize, field.SelectedFigurePosition().Y * CellSize, CellSize, CellSize)
+                    , color: Color.Yellow);
 
 
             sb.End();

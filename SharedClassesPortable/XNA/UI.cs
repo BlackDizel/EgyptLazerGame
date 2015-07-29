@@ -140,15 +140,32 @@ namespace EgyptLazerGame.Classes.XNA
         public void Draw(SpriteBatch sb)
         {
             foreach (var el in field)
-                sb.Draw(tBt, el, Color.White);
+                sb.Draw(
+                    texture: tBt
+                    , destinationRectangle: new Rectangle((int)el.X, (int)el.Y, GameClass.CellSize, GameClass.CellSize)
+                    , color: Color.White);
 
 
             foreach (var el in lBtnDirection)
-                sb.Draw(tBt, el, Color.Red);
+                sb.Draw(
+                    texture: tBt
+                    , destinationRectangle: new Rectangle((int)el.X, (int)el.Y, GameClass.CellSize, GameClass.CellSize)
+                    , color: Color.Red);
 
-            sb.Draw(tBt, btnRotateLeft, Color.White);
-            sb.Draw(tBt, btnRotateRight, Color.White);
-            sb.Draw(tBt, btnTurn, Color.White);
+            sb.Draw(
+                texture: tBt
+                , destinationRectangle: new Rectangle((int)btnRotateLeft.X, (int)btnRotateLeft.Y, GameClass.CellSize, GameClass.CellSize)
+                , color: Color.White);
+
+            sb.Draw(
+                texture: tBt
+                , destinationRectangle: new Rectangle((int)btnRotateRight.X, (int)btnRotateRight.Y, GameClass.CellSize, GameClass.CellSize)
+                , color: Color.White);
+
+            sb.Draw(
+                texture: tBt
+                , destinationRectangle: new Rectangle((int)btnTurn.X, (int)btnTurn.Y, GameClass.CellSize, GameClass.CellSize)
+                , color: Color.White);
         }
     }
 }

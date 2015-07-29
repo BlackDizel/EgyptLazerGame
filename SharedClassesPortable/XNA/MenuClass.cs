@@ -13,18 +13,15 @@ namespace EgyptLazerGame.Classes.XNA
     {
         SpriteBatch sb;
         MouseState oldMS;
-
+        
         public MenuClass(Game game)
             : base(game)
         { }
 
+
         protected override void LoadContent()
-        {
-            
+        {            
             sb = new SpriteBatch(GraphicsDevice);
-            /*
-            tSelected = Game.Content.Load<Texture2D>("cell");
-            */
             base.LoadContent();
         }
 

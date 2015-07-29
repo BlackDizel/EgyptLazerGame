@@ -4,7 +4,8 @@ using Microsoft.Xna.Framework.Content;
 using EgyptLazerGame.Classes;
 using EgyptLazerGame.Classes.XNA;
 using Microsoft.Xna.Framework.Input;
-namespace EgyptLazerGame
+using System;
+namespace EgyptLazerGame.Classes
 {
     /// <summary>
     /// This is the main type for your game
@@ -17,9 +18,11 @@ namespace EgyptLazerGame
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
+            
             Content.RootDirectory = "Content";
 
             Components.Add(new MenuClass(this));
+
 
             IsMouseVisible = true;
         }
@@ -42,6 +45,7 @@ namespace EgyptLazerGame
         protected override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+            GameClass.CellSize = Math.Min(GraphicsDevice.Viewport.Width / 14, GraphicsDevice.Viewport.Height / 8);
         }
 
         protected override void Draw(GameTime gameTime)
