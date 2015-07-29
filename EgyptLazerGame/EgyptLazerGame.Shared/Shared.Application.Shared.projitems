@@ -15,16 +15,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="$(MSBuildThisFileDirectory)Classes\CellObject.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Classes\Field.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Classes\Figure.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Classes\Point.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Classes\Ray.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Classes\XNA\MenuClass.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Classes\XNA\GameClass.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Classes\XNA\PointConversion.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Classes\XNA\UI.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Game1.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)GamePage.xaml.cs">
       <DependentUpon>GamePage.xaml</DependentUpon>
     </Compile>

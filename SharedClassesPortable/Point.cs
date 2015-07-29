@@ -4,7 +4,7 @@ using System.Text;
 
 namespace EgyptLazerGame.Classes
 {
-    struct Point
+    public struct Point
     {
         public int X, Y;
         public Point(int x, int y)

@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace EgyptLazerGame.Classes
 {
-    class Ray
+    public class Ray
     {
         List<CellObject> lights;
         CellObject last;

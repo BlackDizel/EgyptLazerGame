@@ -4,7 +4,7 @@ using System.Text;
 
 namespace EgyptLazerGame.Classes
 {
-    class Figure:CellObject
+    public class Figure:CellObject
     {
         public enum Type {sphinx, pharaoh, pyramid, scarab, anubis}
         public enum LightCollision { GameOver, None, Death, clockwise, counterclockwise }

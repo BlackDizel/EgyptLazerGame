@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace EgyptLazerGame.Classes
 {
-    class Field
+    public class Field
     {
         public static List<Figure> figures;
         public enum FigureStepType { None, Move, Rotate };

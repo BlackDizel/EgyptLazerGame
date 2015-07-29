@@ -81,6 +81,10 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
+    <ProjectReference Include="..\..\SharedClassesPortable\SharedClassesPortable.csproj">
+      <Project>{95e7221d-77bb-4bc2-b158-958814db61dd}</Project>
+      <Name>SharedClassesPortable</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
