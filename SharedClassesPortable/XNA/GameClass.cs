@@ -9,7 +9,7 @@ using System.Diagnostics;
 
 namespace EgyptLazerGame.Classes.XNA
 {
-    class GameClass : DrawableGameComponent
+    public class GameClass : DrawableGameComponent
     {
         UI ui;
         SpriteBatch sb;

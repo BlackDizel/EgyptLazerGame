@@ -5,6 +5,7 @@ using EgyptLazerGame.Classes;
 using EgyptLazerGame.Classes.XNA;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Diagnostics;
 namespace EgyptLazerGame.Classes
 {
     /// <summary>
@@ -45,7 +46,11 @@ namespace EgyptLazerGame.Classes
         protected override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            GameClass.CellSize = Math.Min(GraphicsDevice.Viewport.Width / 14, GraphicsDevice.Viewport.Height / 8);
+            
+//            GameClass.CellSize = Math.Min(GraphicsDevice.PresentationParameters.BackBufferWidth / 14, GraphicsDevice.PresentationParameters.BackBufferHeight / 8);
+
+
+
         }
 
         protected override void Draw(GameTime gameTime)

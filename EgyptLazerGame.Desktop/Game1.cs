@@ -14,7 +14,12 @@ namespace EgyptLazerGame
     {
         public Game1():base()
         {
-            Window.AllowUserResizing = true;
+            Window.AllowUserResizing = true;    
+        }
+        protected override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+            GameClass.CellSize = Math.Min(Window.ClientBounds.Width / 14, Window.ClientBounds.Width / 8);
         }
     }
 }
