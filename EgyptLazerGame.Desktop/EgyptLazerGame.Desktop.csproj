@@ -53,16 +53,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\blue\anubis.png" />
-    <Content Include="Content\blue\pharaon.png" />
-    <Content Include="Content\blue\pyramid.png" />
-    <Content Include="Content\blue\scarab.png" />
-    <Content Include="Content\blue\sphinx.png" />
-    <Content Include="Content\red\anubis.png" />
-    <Content Include="Content\red\pharaon.png" />
-    <Content Include="Content\red\pyramid.png" />
-    <Content Include="Content\red\scarab.png" />
-    <Content Include="Content\red\sphinx.png" />
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -70,23 +60,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Content\blue\anubis.xnb" />
-    <None Include="Content\blue\pharaon.xnb" />
-    <None Include="Content\blue\pyramid.xnb" />
-    <None Include="Content\blue\scarab.xnb" />
-    <None Include="Content\blue\sphinx.xnb" />
-    <None Include="Content\button.xnb" />
-    <None Include="Content\cell.xnb" />
-    <None Include="Content\field_arrowUp.xnb" />
-    <None Include="Content\field_arrowUR.xnb" />
-    <None Include="Content\ray.xnb" />
-    <None Include="Content\rayOver.xnb" />
-    <None Include="Content\rayTurn.xnb" />
-    <None Include="Content\red\anubis.xnb" />
-    <None Include="Content\red\pharaon.xnb" />
-    <None Include="Content\red\pyramid.xnb" />
-    <None Include="Content\red\scarab.xnb" />
-    <None Include="Content\red\sphinx.xnb" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SharedClassesPortable\SharedClassesPortable.csproj">
