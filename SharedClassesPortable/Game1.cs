@@ -13,7 +13,7 @@ namespace EgyptLazerGame.Classes
     /// </summary>
     public class Game1 : Game
     {
-        GraphicsDeviceManager graphics;
+        protected GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
         public Game1()

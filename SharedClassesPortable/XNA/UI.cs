@@ -32,7 +32,17 @@ namespace EgyptLazerGame.Classes.XNA
 
         public UI()
         {
-            lBtnDirection = new List<Vector2>
+
+        }
+
+
+        int oldcell;
+        public void Update(GameTime gameTime)
+        {
+            if (oldcell!=GameClass.CellSize)
+            {
+                oldcell = GameClass.CellSize;
+                lBtnDirection = new List<Vector2>
             {
                 new Vector2(11*GameClass.CellSize,0),
                 new Vector2(12*GameClass.CellSize,0),
@@ -46,19 +56,15 @@ namespace EgyptLazerGame.Classes.XNA
                 new Vector2(13*GameClass.CellSize,2*GameClass.CellSize)
             };
 
-            btnRotateLeft = new Vector2(11 * GameClass.CellSize, 4 * GameClass.CellSize);
-            btnRotateRight = new Vector2(13 * GameClass.CellSize, 4 * GameClass.CellSize);
-            btnTurn = new Vector2(12 * GameClass.CellSize, 7 * GameClass.CellSize);
+                btnRotateLeft = new Vector2(11 * GameClass.CellSize, 4 * GameClass.CellSize);
+                btnRotateRight = new Vector2(13 * GameClass.CellSize, 4 * GameClass.CellSize);
+                btnTurn = new Vector2(12 * GameClass.CellSize, 7 * GameClass.CellSize);
 
-            field = new Vector2[80];
-            for (int j = 0; j < 8; ++j)
-                for (int i = 0; i < 10; ++i)
-                    field[j * 10 + i] = new Vector2(i, j) * GameClass.CellSize;
-        }
-
-
-        public void Update(GameTime gameTime)
-        {
+                field = new Vector2[80];
+                for (int j = 0; j < 8; ++j)
+                    for (int i = 0; i < 10; ++i)
+                        field[j * 10 + i] = new Vector2(i, j) * GameClass.CellSize;
+            }
 
         }
 
@@ -139,6 +145,7 @@ namespace EgyptLazerGame.Classes.XNA
 
         public void Draw(SpriteBatch sb)
         {
+            if (field!=null)
             foreach (var el in field)
                 sb.Draw(
                     texture: tBt
@@ -146,6 +153,7 @@ namespace EgyptLazerGame.Classes.XNA
                     , color: Color.White);
 
 
+            if (lBtnDirection!=null)
             foreach (var el in lBtnDirection)
                 sb.Draw(
                     texture: tBt
