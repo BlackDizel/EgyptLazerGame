@@ -53,9 +53,9 @@ namespace EgyptLazerGame.Classes.XNA
             };
             tRay = new Texture2D[3]
             {
-                Game.Content.Load<Texture2D>("rayOver"),
-                Game.Content.Load<Texture2D>("ray"),
-                Game.Content.Load<Texture2D>("rayTurn")
+                Game.Content.Load<Texture2D>("ray/lazer_end"),
+                Game.Content.Load<Texture2D>("ray/forward"),
+                Game.Content.Load<Texture2D>("ray/rotate")
             };
 
             tSelected = Game.Content.Load<Texture2D>("cell");
@@ -95,7 +95,7 @@ namespace EgyptLazerGame.Classes.XNA
                         if (field.IsFigureSelected() && field.StepType != Field.FigureStepType.None)
                         {
                             field.Turn();
-                            ui.SetControlMovePos(new Vector2(-CellSize * 4, 0));
+                            ui.clearDirections();
                         }
                         break;
                     case UI.Action.SelectFigure:
@@ -174,7 +174,7 @@ namespace EgyptLazerGame.Classes.XNA
                         if ((el.MoveDirection.HasFlag(Figure.Direction.Right)) ||
                             (el.MoveDirection.HasFlag(Figure.Direction.Left)))
                             sb.Draw(texture: tRay[1]
-                                    , destinationRectangle: new Rectangle(el.Position.X * CellSize, el.Position.Y * CellSize, CellSize, CellSize)
+                                    , destinationRectangle: new Rectangle(el.Position.X * CellSize + CellSize / 2, el.Position.Y * CellSize + CellSize / 2, CellSize, CellSize)
                                     , color: Color.White
                                     , rotation: (float)(Math.PI / 2.0f)
                                     , origin: new Vector2(CellSize / 2, CellSize / 2));

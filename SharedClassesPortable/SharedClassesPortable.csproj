@@ -41,6 +41,7 @@
     <Compile Include="Point.cs" />
     <Compile Include="Ray.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="XNA\DrawableObject.cs" />
     <Compile Include="XNA\GameClass.cs" />
     <Compile Include="XNA\MenuClass.cs" />
     <Compile Include="XNA\PointConversion.cs" />
