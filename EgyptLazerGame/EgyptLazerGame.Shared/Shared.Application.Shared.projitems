@@ -27,11 +27,14 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)Content\black.png" />
     <Content Include="$(MSBuildThisFileDirectory)Content\blue\anubis.png" />
     <Content Include="$(MSBuildThisFileDirectory)Content\blue\pharaon.png" />
     <Content Include="$(MSBuildThisFileDirectory)Content\blue\pyramid.png" />
     <Content Include="$(MSBuildThisFileDirectory)Content\blue\scarab.png" />
     <Content Include="$(MSBuildThisFileDirectory)Content\blue\sphinx.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Content\border_blue.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Content\border_red.png" />
     <Content Include="$(MSBuildThisFileDirectory)Content\button.png" />
     <Content Include="$(MSBuildThisFileDirectory)Content\button_left.png" />
     <Content Include="$(MSBuildThisFileDirectory)Content\button_right.png" />
@@ -43,6 +46,8 @@
     <Content Include="$(MSBuildThisFileDirectory)Content\game_main.png" />
     <Content Include="$(MSBuildThisFileDirectory)Content\main_menu.png" />
     <Content Include="$(MSBuildThisFileDirectory)Content\map.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Content\no_blue.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Content\no_red.png" />
     <Content Include="$(MSBuildThisFileDirectory)Content\ray\forward.png" />
     <Content Include="$(MSBuildThisFileDirectory)Content\ray\lazer_end.png" />
     <Content Include="$(MSBuildThisFileDirectory)Content\ray\rotate.png" />
@@ -51,6 +56,7 @@
     <Content Include="$(MSBuildThisFileDirectory)Content\red\pyramid.png" />
     <Content Include="$(MSBuildThisFileDirectory)Content\red\scarab.png" />
     <Content Include="$(MSBuildThisFileDirectory)Content\red\sphinx.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Content\white.png" />
     <Content Include="$(MSBuildThisFileDirectory)TODO.txt" />
   </ItemGroup>
   <ItemGroup>

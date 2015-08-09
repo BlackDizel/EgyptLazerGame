@@ -13,12 +13,42 @@ namespace EgyptLazerGame.Classes.XNA
 {
     class UI
     {
-        Texture2D tBt, tField, tRotateLeft, tRotateRight, tEnd, tDirRight, tDirSE;
+        Texture2D tBt, tField, tRotateLeft, tRotateRight, tEnd, tDirRight, tDirSE, tForbOne, tForbTwo, tFade;
         SpriteFont sf, sfText;
         List<DrawableObject> lBtnDirection;
         Vector2 btnRotateLeft, btnRotateRight, btnTurn;
         Vector2[] field;
         Vector2 vText, vTextFigure, vTextGameOver;
+
+        Vector2[] vOneForbidden = 
+        {
+            new Vector2(9,0),
+            new Vector2(9,1),
+            new Vector2(9,2),
+            new Vector2(9,3),
+            new Vector2(9,4),
+            new Vector2(9,5),
+            new Vector2(9,6),
+            new Vector2(9,7),
+
+            new Vector2(1,0),
+            new Vector2(1,7),
+        };
+
+        Vector2[] vTwoForbidden = 
+        {
+            new Vector2(0,0),
+            new Vector2(0,1),
+            new Vector2(0,2),
+            new Vector2(0,3),
+            new Vector2(0,4),
+            new Vector2(0,5),
+            new Vector2(0,6),
+            new Vector2(0,7),
+
+            new Vector2(8,0),
+            new Vector2(8,7),
+        };
 
         public enum Action
         {
@@ -173,6 +203,11 @@ namespace EgyptLazerGame.Classes.XNA
             tDirRight = Content.Load<Texture2D>("direction/right");
             tDirSE = Content.Load<Texture2D>("direction/se");
 
+            tForbOne = Content.Load<Texture2D>("no_red");
+            tForbTwo = Content.Load<Texture2D>("no_blue");
+            tFade = Content.Load<Texture2D>("white");
+
+
             sf = Content.Load<SpriteFont>("font");
             sfText = Content.Load<SpriteFont>("fontText");
         }
@@ -185,6 +220,13 @@ namespace EgyptLazerGame.Classes.XNA
                         texture: tField
                         , destinationRectangle: new Rectangle((int)el.X * GameClass.CellSize, (int)el.Y * GameClass.CellSize, GameClass.CellSize, GameClass.CellSize)
                         , color: Color.White);
+
+            foreach (var el in vOneForbidden)
+                sb.Draw(tForbOne, new Rectangle((int)el.X * GameClass.CellSize, (int)el.Y * GameClass.CellSize, GameClass.CellSize, GameClass.CellSize), Color.White);
+
+            foreach (var el in vTwoForbidden)
+                sb.Draw(tForbTwo, new Rectangle((int)el.X * GameClass.CellSize, (int)el.Y * GameClass.CellSize, GameClass.CellSize, GameClass.CellSize), Color.White);
+
 
 
             if (lBtnDirection != null)
@@ -219,6 +261,7 @@ namespace EgyptLazerGame.Classes.XNA
 
         public void DrawGameOver(SpriteBatch sb, int winner)
         {
+            sb.Draw(tFade, new Rectangle(0, 0, 14 * GameClass.CellSize, 8 * GameClass.CellSize), new Color(0,0,0,0.5f));
             sb.DrawString(sf, "ИГРА ОКОНЧЕНА.\n\rФАРАОН ПОВЕРЖЕН. ПОБЕДА " + (winner == 0 ? "КРАСНОГО" : "СИНЕГО") + " ИГРОКА", vTextGameOver * GameClass.CellSize, Color.White);
         }
     }

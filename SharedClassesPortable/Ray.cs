@@ -39,7 +39,7 @@ namespace EgyptLazerGame.Classes
         {
             RayLight c = Step();
 
-            while ((c != null) && (lightExist(c.Position) == null))
+            while (c != null)
             {
                 lights.Add(last);
                 c = Step();
@@ -47,10 +47,7 @@ namespace EgyptLazerGame.Classes
 
         }
 
-        RayLight lightExist(Point pos)
-        {
-            return (from c in lights where c.Position == pos select c).FirstOrDefault();            
-        }
+        
         RayLight Step()
         {
             if ((last.MoveDirection == CellObject.Direction.Up) && (last.Position.Y == 0) ||
