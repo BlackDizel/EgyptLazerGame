@@ -18,7 +18,8 @@ namespace EgyptLazerGame.Classes.XNA
         Rectangle rec;
         ParticleController dustController;
         double lastEngineTime;
-        double delayEngine = 750;
+        double delayEngine = 2000;//650;
+        SpriteFont sf;
 
         public MenuClass(Game game)
             : base(game)
@@ -29,6 +30,8 @@ namespace EgyptLazerGame.Classes.XNA
         {
             sb = new SpriteBatch(GraphicsDevice);
             tBg = Game.Content.Load<Texture2D>("main_menu");
+
+            sf = Game.Content.Load<SpriteFont>("fontText");
 
             dustController = new ParticleController();
             dustController.LoadContent(Game.Content.Load<Texture2D>("dust"));
@@ -47,7 +50,10 @@ namespace EgyptLazerGame.Classes.XNA
             {
                 dustController.EngineRocket(
                     new Vector2(7 * GameClass.CellSize, 5 * GameClass.CellSize),
-                    new Vector2(4 * GameClass.CellSize, 2 * GameClass.CellSize), 0, -2, 40, 0.05f, velocityRandom: new Vector2(0, 2));
+                    new Vector2(4 * GameClass.CellSize, 2 * GameClass.CellSize), 0, -2, 40,
+                    colorAlpha: 1f,
+                    alphaVel: 0.2f,
+                    velocityRandom: new Vector2(0.4f, 2));
 
                 lastEngineTime = gameTime.TotalGameTime.TotalMilliseconds + delayEngine;
             }
@@ -73,6 +79,8 @@ namespace EgyptLazerGame.Classes.XNA
         {
             sb.Begin();
             sb.Draw(tBg, rec, Color.White);
+            sb.DrawString(sf, "BlackDizel, Katriniya. Special for forum.hellroom.ru GameGam #4", Vector2.Zero, Color.White);
+
             dustController.Draw(sb);
 
             sb.End();

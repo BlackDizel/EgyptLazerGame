@@ -33,8 +33,7 @@
     <Content Include="$(MSBuildThisFileDirectory)Content\blue\pyramid.png" />
     <Content Include="$(MSBuildThisFileDirectory)Content\blue\scarab.png" />
     <Content Include="$(MSBuildThisFileDirectory)Content\blue\sphinx.png" />
-    <Content Include="$(MSBuildThisFileDirectory)Content\border_blue.png" />
-    <Content Include="$(MSBuildThisFileDirectory)Content\border_red.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Content\border.png" />
     <Content Include="$(MSBuildThisFileDirectory)Content\button.png" />
     <Content Include="$(MSBuildThisFileDirectory)Content\button_left.png" />
     <Content Include="$(MSBuildThisFileDirectory)Content\button_right.png" />
@@ -44,6 +43,7 @@
     <Content Include="$(MSBuildThisFileDirectory)Content\dust.png" />
     <Content Include="$(MSBuildThisFileDirectory)Content\end.png" />
     <Content Include="$(MSBuildThisFileDirectory)Content\game_main.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Content\line.png" />
     <Content Include="$(MSBuildThisFileDirectory)Content\main_menu.png" />
     <Content Include="$(MSBuildThisFileDirectory)Content\map.png" />
     <Content Include="$(MSBuildThisFileDirectory)Content\no_blue.png" />

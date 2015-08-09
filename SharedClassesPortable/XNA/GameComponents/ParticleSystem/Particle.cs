@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -44,19 +45,18 @@ namespace Byters.GameComponents
             Angle += AngularVelocity;
             Size += SizeVel;
 
-            Color = new Vector4(Color.X, Color.Y, Color.Z, Color.W - AlphaVel); // убавляем цвет. Кстати, цвет записан в Vector4, а не в Color, потому что: Color.R/G/B имеет тип Byte (от 0x00 до 0xFF), чтобы не проделывать лишней трансформации, используем float и Vector4
-
+            Color = new Vector4(Color.X, Color.Y, Color.Z, Math.Max(Color.W - AlphaVel, 0)); // убавляем цвет. Кстати, цвет записан в Vector4, а не в Color, потому что: Color.R/G/B имеет тип Byte (от 0x00 до 0xFF), чтобы не проделывать лишней трансформации, используем float и Vector4
         }
 
 
         public void Draw(SpriteBatch spriteBatch)
         {
 
-           // Rectangle sourceRectangle = new Rectangle(0, 0, Texture.Width, Texture.Height); // область из текстуры: вся
+            // Rectangle sourceRectangle = new Rectangle(0, 0, Texture.Width, Texture.Height); // область из текстуры: вся
             Vector2 origin = new Vector2(Texture.Width / 2, Texture.Height / 2); // центр
 
-            spriteBatch.Draw(Texture, Position, null, new Color(Color),
-                Angle, origin, Size, SpriteEffects.None, 0); // акт прорисовки
+            spriteBatch.Draw(texture: Texture, position: Position, color: new Color(Color),
+                rotation: Angle, origin: origin, scale: new Vector2(Size, Size)); // акт прорисовки
 
         }
 

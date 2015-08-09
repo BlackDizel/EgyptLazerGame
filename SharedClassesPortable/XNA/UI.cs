@@ -13,7 +13,7 @@ namespace EgyptLazerGame.Classes.XNA
 {
     class UI
     {
-        Texture2D tBt, tField, tRotateLeft, tRotateRight, tEnd, tDirRight, tDirSE, tForbOne, tForbTwo, tFade;
+        Texture2D tBt, tField, tRotateLeft, tRotateRight, tEnd, tDirRight, tDirSE, tForbOne, tForbTwo, tFade, tLine;
         SpriteFont sf, sfText;
         List<DrawableObject> lBtnDirection;
         Vector2 btnRotateLeft, btnRotateRight, btnTurn;
@@ -34,6 +34,19 @@ namespace EgyptLazerGame.Classes.XNA
             new Vector2(1,0),
             new Vector2(1,7),
         };
+
+        Vector2[] vLine = 
+        {
+            new Vector2(10,0),
+            new Vector2(10,1),
+            new Vector2(10,2),
+            new Vector2(10,3),
+            new Vector2(10,4),
+            new Vector2(10,5),
+            new Vector2(10,6),
+            new Vector2(10,7),
+        };
+
 
         Vector2[] vTwoForbidden = 
         {
@@ -206,7 +219,7 @@ namespace EgyptLazerGame.Classes.XNA
             tForbOne = Content.Load<Texture2D>("no_red");
             tForbTwo = Content.Load<Texture2D>("no_blue");
             tFade = Content.Load<Texture2D>("white");
-
+            tLine = Content.Load<Texture2D>("line");
 
             sf = Content.Load<SpriteFont>("font");
             sfText = Content.Load<SpriteFont>("fontText");
@@ -227,15 +240,17 @@ namespace EgyptLazerGame.Classes.XNA
             foreach (var el in vTwoForbidden)
                 sb.Draw(tForbTwo, new Rectangle((int)el.X * GameClass.CellSize, (int)el.Y * GameClass.CellSize, GameClass.CellSize, GameClass.CellSize), Color.White);
 
+            foreach (var el in vLine)
+                sb.Draw(tLine, new Rectangle((int)el.X * GameClass.CellSize, (int)el.Y * GameClass.CellSize, GameClass.CellSize / 2, GameClass.CellSize), Color.White);
 
 
             if (lBtnDirection != null)
                 foreach (var el in lBtnDirection)
                     sb.Draw(
                         texture: el.texture
-                        , destinationRectangle: new Rectangle((int)el.Position.X * GameClass.CellSize + GameClass.CellSize / 2, (int)el.Position.Y * GameClass.CellSize + GameClass.CellSize / 2, GameClass.CellSize, GameClass.CellSize)
+                        , destinationRectangle: new Rectangle((int)(el.Position.X * GameClass.CellSize + GameClass.CellSize / 2f), (int)(el.Position.Y * GameClass.CellSize + GameClass.CellSize / 2f), GameClass.CellSize, GameClass.CellSize)
                         , rotation: MathHelper.ToRadians(el.rotate)
-                        , origin: new Vector2(GameClass.CellSize / 2, GameClass.CellSize / 2)
+                        , origin: new Vector2(el.texture.Width / 2f, el.texture.Width / 2f)
                         , color: Color.White);
 
             sb.Draw(
@@ -253,16 +268,16 @@ namespace EgyptLazerGame.Classes.XNA
                 , destinationRectangle: new Rectangle((int)btnTurn.X * GameClass.CellSize, (int)btnTurn.Y * GameClass.CellSize, GameClass.CellSize * 3, GameClass.CellSize)
                 , color: Color.White);
 
-            sb.DrawString(sf, "ХОД " + (player == 0 ? "КРАСНОГО" : "СИНЕГО") + " ИГРОКА", vText * GameClass.CellSize, Color.White);
+            sb.DrawString(sf, "ХОД " + (player == 0 ? "КРАСНОГО" : "СИНЕГО") + " ИГРОКА", vText * GameClass.CellSize, Color.White, 0f, Vector2.Zero, GameClass.CellSize / 100f, SpriteEffects.None, 0f);
 
-            sb.DrawString(sfText, selectedFigureText, vTextFigure * GameClass.CellSize, Color.White);
+            sb.DrawString(sfText, selectedFigureText, vTextFigure * GameClass.CellSize, Color.White, 0f, Vector2.Zero, GameClass.CellSize / 100f, SpriteEffects.None, 0f);
 
         }
 
         public void DrawGameOver(SpriteBatch sb, int winner)
         {
-            sb.Draw(tFade, new Rectangle(0, 0, 14 * GameClass.CellSize, 8 * GameClass.CellSize), new Color(0,0,0,0.5f));
-            sb.DrawString(sf, "ИГРА ОКОНЧЕНА.\n\rФАРАОН ПОВЕРЖЕН. ПОБЕДА " + (winner == 0 ? "КРАСНОГО" : "СИНЕГО") + " ИГРОКА", vTextGameOver * GameClass.CellSize, Color.White);
+            sb.Draw(tFade, new Rectangle(0, 0, 14 * GameClass.CellSize, 8 * GameClass.CellSize), new Color(0, 0, 0, 0.5f));
+            sb.DrawString(sf, "ИГРА ОКОНЧЕНА.\n\rФАРАОН ПОВЕРЖЕН. ПОБЕДА " + (winner == 0 ? "КРАСНОГО" : "СИНЕГО") + " ИГРОКА", vTextGameOver * GameClass.CellSize, Color.White, 0f, Vector2.Zero, GameClass.CellSize / 100f, SpriteEffects.None, 0f);
         }
     }
 }

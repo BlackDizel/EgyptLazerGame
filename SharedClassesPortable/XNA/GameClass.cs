@@ -60,7 +60,7 @@ namespace EgyptLazerGame.Classes.XNA
                 Game.Content.Load<Texture2D>("ray/rotate")
             };
 
-            tSelected = Game.Content.Load<Texture2D>("cell");
+            tSelected = Game.Content.Load<Texture2D>("border");
 
             tBg = Game.Content.Load<Texture2D>("game_main");
             base.LoadContent();
@@ -218,7 +218,7 @@ namespace EgyptLazerGame.Classes.XNA
                             , destinationRectangle: new Rectangle(el.Position.X * CellSize + CellSize / 2, el.Position.Y * CellSize + CellSize / 2, CellSize, CellSize)
                             , color: Color.White
                             , rotation: rotation
-                            , origin: new Vector2(CellSize / 2, CellSize / 2));
+                            , origin: new Vector2(t.Width / 2, t.Width / 2));
                 }
             //selected figure
             if (field.IsFigureSelected())
