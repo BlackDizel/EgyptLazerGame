@@ -40,6 +40,7 @@
     <Content Include="$(MSBuildThisFileDirectory)Content\direction\se.png" />
     <Content Include="$(MSBuildThisFileDirectory)Content\dust.png" />
     <Content Include="$(MSBuildThisFileDirectory)Content\end.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Content\game_main.png" />
     <Content Include="$(MSBuildThisFileDirectory)Content\main_menu.png" />
     <Content Include="$(MSBuildThisFileDirectory)Content\map.png" />
     <Content Include="$(MSBuildThisFileDirectory)Content\ray\forward.png" />

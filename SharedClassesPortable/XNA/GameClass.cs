@@ -16,7 +16,7 @@ namespace EgyptLazerGame.Classes.XNA
         Field field;
         Texture2D[] tFigs;
         Texture2D[] tRay;
-        Texture2D tSelected;
+        Texture2D tSelected, tBg;
         public MouseState oldMS;
         KeyboardState oldKS;
         bool isGameOver = false;
@@ -62,6 +62,7 @@ namespace EgyptLazerGame.Classes.XNA
 
             tSelected = Game.Content.Load<Texture2D>("cell");
 
+            tBg = Game.Content.Load<Texture2D>("game_main");
             base.LoadContent();
         }
         public override void Update(GameTime gameTime)
@@ -129,6 +130,8 @@ namespace EgyptLazerGame.Classes.XNA
         public override void Draw(GameTime gameTime)
         {
             sb.Begin();
+
+            sb.Draw(tBg, Vector2.Zero, Color.White);
 
             ui.Draw(sb, field.CurrentPlayer, field.selectedText);
 
