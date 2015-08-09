@@ -7,17 +7,18 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using SharedClassesPortable.XNA;
+using System.Diagnostics;
 
 namespace EgyptLazerGame.Classes.XNA
 {
     class UI
     {
         Texture2D tBt, tField, tRotateLeft, tRotateRight, tEnd, tDirRight, tDirSE;
-        SpriteFont sf;
+        SpriteFont sf, sfText;
         List<DrawableObject> lBtnDirection;
         Vector2 btnRotateLeft, btnRotateRight, btnTurn;
         Vector2[] field;
-        Vector2 vText;
+        Vector2 vText, vTextFigure, vTextGameOver;
 
         public enum Action
         {
@@ -34,32 +35,25 @@ namespace EgyptLazerGame.Classes.XNA
 
         public UI()
         {
+            if (lBtnDirection == null)
+                lBtnDirection = new List<DrawableObject>();
 
+            btnRotateLeft = new Vector2(11, 4);
+            btnRotateRight = new Vector2(13, 4);
+            btnTurn = new Vector2(11, 6);
+
+            field = new Vector2[80];
+            for (int j = 0; j < 8; ++j)
+                for (int i = 0; i < 10; ++i)
+                    field[j * 10 + i] = new Vector2(i, j);
+
+            vText = new Vector2(11, 1);
+            vTextFigure = new Vector2(10.5f, 2);
+            vTextGameOver = new Vector2(2.5f, 3.8f);
         }
 
-
-        int oldcell;
         public void Update(GameTime gameTime)
-        {
-            if (oldcell != GameClass.CellSize)
-            {
-                oldcell = GameClass.CellSize;
-                if (lBtnDirection == null)
-                    lBtnDirection = new List<DrawableObject>();
-
-                btnRotateLeft = new Vector2(11 * GameClass.CellSize, 4 * GameClass.CellSize);
-                btnRotateRight = new Vector2(13 * GameClass.CellSize, 4 * GameClass.CellSize);
-                btnTurn = new Vector2(11 * GameClass.CellSize, 6 * GameClass.CellSize);
-
-                field = new Vector2[80];
-                for (int j = 0; j < 8; ++j)
-                    for (int i = 0; i < 10; ++i)
-                        field[j * 10 + i] = new Vector2(i, j) * GameClass.CellSize;
-
-                vText = new Vector2(11 * GameClass.CellSize, 2 * GameClass.CellSize);
-            }
-
-        }
+        { }
 
         public void clearDirections()
         {
@@ -85,19 +79,19 @@ namespace EgyptLazerGame.Classes.XNA
 
             if (dir.HasFlag(CellObject.Direction.Up))
             {
-                newPos += new Vector2(0, -GameClass.CellSize);
+                newPos += new Vector2(0, -1);
                 texture = tDirRight;
                 rotate = -90f;
             }
             if (dir.HasFlag(CellObject.Direction.Down))
             {
-                newPos += new Vector2(0, GameClass.CellSize);
+                newPos += new Vector2(0, 1);
                 texture = tDirRight;
                 rotate = 90f;
             }
             if (dir.HasFlag(CellObject.Direction.Right))
             {
-                newPos += new Vector2(GameClass.CellSize, 0);
+                newPos += new Vector2(1, 0);
                 if (texture == null) texture = tDirRight;
                 else if (rotate == -90f)
                 {
@@ -112,7 +106,7 @@ namespace EgyptLazerGame.Classes.XNA
 
             if (dir.HasFlag(CellObject.Direction.Left))
             {
-                newPos += new Vector2(-GameClass.CellSize, 0);
+                newPos += new Vector2(-1, 0);
                 if (texture == null)
                 {
                     texture = tDirRight;
@@ -143,11 +137,11 @@ namespace EgyptLazerGame.Classes.XNA
             UIAction = UI.Action.SelectFigure;
             if (SelectedFigurePos != null)
             {
-                var p = (msPosition / GameClass.CellSize).ToPoint().ToVector2() * GameClass.CellSize;
+                var p = (msPosition / GameClass.CellSize).ToPoint().ToVector2();
                 DrawableObject v = (from c in lBtnDirection where c.Position.Equals(p) select c).FirstOrDefault();
                 if (v != null)
                 {
-                    direction = Figure.CalcDirection(PointConversion.toPoint(SelectedFigurePos.Value * GameClass.CellSize), PointConversion.toPoint(v.Position));
+                    direction = Figure.CalcDirection(PointConversion.toPoint(SelectedFigurePos.Value), PointConversion.toPoint(v.Position));
                     UIAction = UI.Action.Move;
                 }
                 else if (p.Equals(btnRotateLeft))
@@ -160,7 +154,7 @@ namespace EgyptLazerGame.Classes.XNA
                     IsClockwise = true;
                     UIAction = UI.Action.Rotate;
                 }
-                else if (p.Equals(btnTurn) || p.Equals(btnTurn + new Vector2(GameClass.CellSize, 0)) || p.Equals(btnTurn + new Vector2(2 * GameClass.CellSize, 0)))
+                else if (p.Equals(btnTurn) || p.Equals(btnTurn + new Vector2(1, 0)) || p.Equals(btnTurn + new Vector2(2, 0)))
                 {
                     UIAction = UI.Action.Turn;
                 }
@@ -180,16 +174,16 @@ namespace EgyptLazerGame.Classes.XNA
             tDirSE = Content.Load<Texture2D>("direction/se");
 
             sf = Content.Load<SpriteFont>("font");
-
+            sfText = Content.Load<SpriteFont>("fontText");
         }
 
-        public void Draw(SpriteBatch sb)
+        public void Draw(SpriteBatch sb, int player, String selectedFigureText)
         {
             if (field != null)
                 foreach (var el in field)
                     sb.Draw(
                         texture: tField
-                        , destinationRectangle: new Rectangle((int)el.X, (int)el.Y, GameClass.CellSize, GameClass.CellSize)
+                        , destinationRectangle: new Rectangle((int)el.X * GameClass.CellSize, (int)el.Y * GameClass.CellSize, GameClass.CellSize, GameClass.CellSize)
                         , color: Color.White);
 
 
@@ -197,27 +191,35 @@ namespace EgyptLazerGame.Classes.XNA
                 foreach (var el in lBtnDirection)
                     sb.Draw(
                         texture: el.texture
-                        , destinationRectangle: new Rectangle((int)el.Position.X + GameClass.CellSize / 2, (int)el.Position.Y + GameClass.CellSize / 2, GameClass.CellSize, GameClass.CellSize)
+                        , destinationRectangle: new Rectangle((int)el.Position.X * GameClass.CellSize + GameClass.CellSize / 2, (int)el.Position.Y * GameClass.CellSize + GameClass.CellSize / 2, GameClass.CellSize, GameClass.CellSize)
                         , rotation: MathHelper.ToRadians(el.rotate)
                         , origin: new Vector2(GameClass.CellSize / 2, GameClass.CellSize / 2)
                         , color: Color.White);
 
             sb.Draw(
                 texture: tRotateLeft
-                , destinationRectangle: new Rectangle((int)btnRotateLeft.X, (int)btnRotateLeft.Y, GameClass.CellSize, GameClass.CellSize)
+                , destinationRectangle: new Rectangle((int)btnRotateLeft.X * GameClass.CellSize, (int)btnRotateLeft.Y * GameClass.CellSize, GameClass.CellSize, GameClass.CellSize)
                 , color: Color.White);
 
             sb.Draw(
                 texture: tRotateRight
-                , destinationRectangle: new Rectangle((int)btnRotateRight.X, (int)btnRotateRight.Y, GameClass.CellSize, GameClass.CellSize)
+                , destinationRectangle: new Rectangle((int)btnRotateRight.X * GameClass.CellSize, (int)btnRotateRight.Y * GameClass.CellSize, GameClass.CellSize, GameClass.CellSize)
                 , color: Color.White);
 
             sb.Draw(
                 texture: tEnd
-                , destinationRectangle: new Rectangle((int)btnTurn.X, (int)btnTurn.Y, GameClass.CellSize * 3, GameClass.CellSize)
+                , destinationRectangle: new Rectangle((int)btnTurn.X * GameClass.CellSize, (int)btnTurn.Y * GameClass.CellSize, GameClass.CellSize * 3, GameClass.CellSize)
                 , color: Color.White);
 
-            sb.DrawString(sf, "some text", vText, Color.White);
+            sb.DrawString(sf, "ХОД " + (player == 0 ? "КРАСНОГО" : "СИНЕГО") + " ИГРОКА", vText * GameClass.CellSize, Color.White);
+
+            sb.DrawString(sfText, selectedFigureText, vTextFigure * GameClass.CellSize, Color.White);
+
+        }
+
+        public void DrawGameOver(SpriteBatch sb, int winner)
+        {
+            sb.DrawString(sf, "ИГРА ОКОНЧЕНА.\n\rФАРАОН ПОВЕРЖЕН. ПОБЕДА " + (winner == 0 ? "КРАСНОГО" : "СИНЕГО") + " ИГРОКА", vTextGameOver * GameClass.CellSize, Color.White);
         }
     }
 }

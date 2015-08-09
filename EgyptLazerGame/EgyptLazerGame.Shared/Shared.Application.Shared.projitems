@@ -38,7 +38,9 @@
     <Content Include="$(MSBuildThisFileDirectory)Content\cell.png" />
     <Content Include="$(MSBuildThisFileDirectory)Content\direction\right.png" />
     <Content Include="$(MSBuildThisFileDirectory)Content\direction\se.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Content\dust.png" />
     <Content Include="$(MSBuildThisFileDirectory)Content\end.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Content\main_menu.png" />
     <Content Include="$(MSBuildThisFileDirectory)Content\map.png" />
     <Content Include="$(MSBuildThisFileDirectory)Content\ray\forward.png" />
     <Content Include="$(MSBuildThisFileDirectory)Content\ray\lazer_end.png" />
@@ -52,7 +54,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)Content\Content.mgcb" />
+    <None Include="$(MSBuildThisFileDirectory)Content\fontText.spritefont" />
     <None Include="$(MSBuildThisFileDirectory)Content\font.spritefont" />
     <Content Include="$(MSBuildThisFileDirectory)Content\font.xnb" />
+    <Content Include="$(MSBuildThisFileDirectory)Content\fontText.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 </Project>

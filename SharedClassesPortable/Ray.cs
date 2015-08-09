@@ -5,26 +5,39 @@ using System.Linq;
 
 namespace EgyptLazerGame.Classes
 {
+    public class RayLight : CellObject
+    {
+        public enum State { Forward, Rotate, close }
+        
+        public RayLight(Point pos, Direction dir) : base(pos, dir) { }
+        public State state;
+        public bool clockwise;
+    }
     public class Ray
     {
-        List<CellObject> lights;
-        CellObject last;
+
+        public int LooserId { get { return loserId; } private set { } }
+        List<RayLight> lights;
+        RayLight last;
         bool isGameOver;
+        private int loserId;
         public bool IsGameOver { get { return isGameOver; } private set { } }
         public Ray(Point startPos, CellObject.Direction dir)
         {
             isGameOver = false;
-            lights = new List<CellObject>();
-            last = new CellObject(startPos, dir);
+            loserId=-1;
+            lights = new List<RayLight>();
+            last = new RayLight(startPos, dir);
+            last.state = EgyptLazerGame.Classes.RayLight.State.close;
             lights.Add(last);
  
         }
 
 
-        public List<CellObject> Lights { get { return lights; } private set { } }
+        public List<RayLight> Lights { get { return lights; } private set { } }
         public void Move()
         {
-            CellObject c = Step();
+            RayLight c = Step();
 
             while ((c != null) && (lightExist(c.Position) == null))
             {
@@ -34,11 +47,11 @@ namespace EgyptLazerGame.Classes
 
         }
 
-        CellObject lightExist(Point pos)
+        RayLight lightExist(Point pos)
         {
             return (from c in lights where c.Position == pos select c).FirstOrDefault();            
         }
-        CellObject Step()
+        RayLight Step()
         {
             if ((last.MoveDirection == CellObject.Direction.Up) && (last.Position.Y == 0) ||
                 (last.MoveDirection == CellObject.Direction.Right) && (last.Position.X == 9)||
@@ -63,8 +76,8 @@ namespace EgyptLazerGame.Classes
                     newPos.X-=1;
                     break;
             }
-            
-            last = new CellObject(newPos,last.MoveDirection);
+
+            last = new RayLight(newPos, last.MoveDirection);
             
             Figure f = (from c in Field.figures where c.Position==newPos select c).FirstOrDefault();
             if (f!=null)
@@ -75,15 +88,20 @@ namespace EgyptLazerGame.Classes
                     case Figure.LightCollision.None: return null;
                     case Figure.LightCollision.GameOver:
                         isGameOver = true;
+                        loserId = f.PlayerID;
                         return null; 
-                    case Figure.LightCollision.Death: 
+                    case Figure.LightCollision.Death:
                         Field.figures.Remove(f);
                         return null;
                     case Figure.LightCollision.clockwise:
+                        last.state = EgyptLazerGame.Classes.RayLight.State.Rotate;
                         last.Rotate(true);
+                        last.clockwise = true;
                         break;
                     case Figure.LightCollision.counterclockwise:
+                        last.state = EgyptLazerGame.Classes.RayLight.State.Rotate;
                         last.Rotate(false);
+                        last.clockwise = false;
                         break;
                 }
             }

@@ -17,8 +17,10 @@ namespace EgyptLazerGame.Classes.XNA
         Texture2D[] tFigs;
         Texture2D[] tRay;
         Texture2D tSelected;
-        public static MouseState oldMS;
+        public MouseState oldMS;
         KeyboardState oldKS;
+        bool isGameOver = false;
+        int winnerId=-1;
 
         public static int CellSize = 100;
 
@@ -85,36 +87,39 @@ namespace EgyptLazerGame.Classes.XNA
             MouseState ms = Mouse.GetState();
             if ((ms.LeftButton == ButtonState.Released) && (oldMS.LeftButton == ButtonState.Pressed))
             {
-                if (field.IsFigureSelected())
-                    ui.Input(PointConversion.toVector2(field.SelectedFigurePosition()), ms.Position.ToVector2());
-                else
-                    ui.Input(null, ms.Position.ToVector2());
-                switch (ui.UIAction)
+                if (!isGameOver)
                 {
-                    case UI.Action.Turn:
-                        if (field.IsFigureSelected() && field.StepType != Field.FigureStepType.None)
-                        {
-                            field.Turn();
-                            ui.clearDirections();
-                        }
-                        break;
-                    case UI.Action.SelectFigure:
-                        field.SetSelectedFigure(PointConversion.toPoint(ms.Position.ToVector2() / CellSize));
-                        if (field.IsFigureSelected())
-                        {
-                            var dirs = field.IsDirectionsAvailableForSelectedFigure();
-                            ui.SetControlMovePos(PointConversion.toVector2(field.SelectedFigurePosition()) * CellSize, dirs);
-                        }
-                        break;
-                    case UI.Action.Rotate:
-                        field.StepType = Field.FigureStepType.Rotate;
-                        field.IsClockwiseRotation = ui.IsClockwise;
-                        break;
-                    case UI.Action.Move:
-                        field.StepType = Field.FigureStepType.Move;
-                        field.SetDirection(ui.direction);
-                        break;
-
+                    if (field.IsFigureSelected())
+                        ui.Input(PointConversion.toVector2(field.SelectedFigurePosition()), ms.Position.ToVector2());
+                    else
+                        ui.Input(null, ms.Position.ToVector2());
+                    switch (ui.UIAction)
+                    {
+                        case UI.Action.Turn:
+                            if (field.IsFigureSelected() && field.StepType != Field.FigureStepType.None)
+                            {
+                                isGameOver = field.Turn(out winnerId);
+                                winnerId = (winnerId + 1) % 2;
+                                ui.clearDirections();
+                            }
+                            break;
+                        case UI.Action.SelectFigure:
+                            field.SetSelectedFigure(PointConversion.toPoint(ms.Position.ToVector2() / CellSize));
+                            if (field.IsFigureSelected())
+                            {
+                                var dirs = field.IsDirectionsAvailableForSelectedFigure();
+                                ui.SetControlMovePos(PointConversion.toVector2(field.SelectedFigurePosition()), dirs);
+                            }
+                            break;
+                        case UI.Action.Rotate:
+                            field.StepType = Field.FigureStepType.Rotate;
+                            field.IsClockwiseRotation = ui.IsClockwise;
+                            break;
+                        case UI.Action.Move:
+                            field.StepType = Field.FigureStepType.Move;
+                            field.SetDirection(ui.direction);
+                            break;
+                    }
                 }
             }
 
@@ -124,7 +129,8 @@ namespace EgyptLazerGame.Classes.XNA
         public override void Draw(GameTime gameTime)
         {
             sb.Begin();
-            ui.Draw(sb);
+
+            ui.Draw(sb, field.CurrentPlayer, field.selectedText);
 
             //figures
             foreach (var fg in Field.figures)
@@ -162,27 +168,54 @@ namespace EgyptLazerGame.Classes.XNA
             if (field.RayLight != null)
                 foreach (var el in field.RayLight.Lights)
                 {
-                    if (field.RayLight.Lights.IndexOf(el) == 0)
-                    {
-                        sb.Draw(
-                            texture: tRay[0]
-                            , destinationRectangle: new Rectangle(el.Position.X * CellSize, el.Position.Y * CellSize, CellSize, CellSize)
-                            , color: Color.White);
-                    }
+                    Texture2D t = tRay[0];
+                    if (el.state == RayLight.State.Forward)
+                        t = tRay[1];
+                    else if (el.state == RayLight.State.Rotate)
+                        t = tRay[2];
+
+                    float rotation = 0f;
+
+                    if (t != tRay[2])
+                        switch (el.MoveDirection)
+                        {
+                            case CellObject.Direction.Down:
+                                rotation = (float)Math.PI;
+                                break;
+                            case CellObject.Direction.Left:
+                                rotation = (float)-Math.PI / 2;
+                                break;
+                            case CellObject.Direction.Right:
+                                rotation = (float)Math.PI / 2;
+                                break;
+                            case CellObject.Direction.Up:
+                                rotation = 0f;
+                                break;
+                        }
                     else
                     {
-                        if ((el.MoveDirection.HasFlag(Figure.Direction.Right)) ||
-                            (el.MoveDirection.HasFlag(Figure.Direction.Left)))
-                            sb.Draw(texture: tRay[1]
-                                    , destinationRectangle: new Rectangle(el.Position.X * CellSize + CellSize / 2, el.Position.Y * CellSize + CellSize / 2, CellSize, CellSize)
-                                    , color: Color.White
-                                    , rotation: (float)(Math.PI / 2.0f)
-                                    , origin: new Vector2(CellSize / 2, CellSize / 2));
+                        if (el.MoveDirection.HasFlag(CellObject.Direction.Up) && !el.clockwise ||
+                            el.MoveDirection.HasFlag(CellObject.Direction.Left) && el.clockwise)
+                            rotation = 0f;
                         else
-                            sb.Draw(texture: tRay[1]
-                                    , destinationRectangle: new Rectangle(el.Position.X * CellSize, el.Position.Y * CellSize, CellSize, CellSize)
-                                    , color: Color.White);
+                            if (el.MoveDirection.HasFlag(CellObject.Direction.Left) && !el.clockwise ||
+                            el.MoveDirection.HasFlag(CellObject.Direction.Down) && el.clockwise)
+                                rotation = (float)-Math.PI / 2;
+                            else
+                                if (el.MoveDirection.HasFlag(CellObject.Direction.Right) && !el.clockwise ||
+                                el.MoveDirection.HasFlag(CellObject.Direction.Up) && el.clockwise)
+                                    rotation = (float)Math.PI / 2;
+                                else
+                                    if (el.MoveDirection.HasFlag(CellObject.Direction.Down) && !el.clockwise ||
+                                    el.MoveDirection.HasFlag(CellObject.Direction.Right) && el.clockwise)
+                                        rotation = (float)Math.PI;
                     }
+
+                    sb.Draw(texture: t
+                            , destinationRectangle: new Rectangle(el.Position.X * CellSize + CellSize / 2, el.Position.Y * CellSize + CellSize / 2, CellSize, CellSize)
+                            , color: Color.White
+                            , rotation: rotation
+                            , origin: new Vector2(CellSize / 2, CellSize / 2));
                 }
             //selected figure
             if (field.IsFigureSelected())
@@ -191,6 +224,8 @@ namespace EgyptLazerGame.Classes.XNA
                     , destinationRectangle: new Rectangle(field.SelectedFigurePosition().X * CellSize, field.SelectedFigurePosition().Y * CellSize, CellSize, CellSize)
                     , color: Color.Yellow);
 
+            if (isGameOver)
+                ui.DrawGameOver(sb, winnerId);
 
             sb.End();
             base.Draw(gameTime);

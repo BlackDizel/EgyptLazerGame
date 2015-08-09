@@ -14,8 +14,51 @@ namespace EgyptLazerGame.Classes
         CellObject.Direction direction;
         public bool IsClockwiseRotation;
         public FigureStepType StepType;
+        public String selectedText
+        {
+            get
+            {
+                if (!IsFigureSelected()) return "";
 
-        int CurrentPlayer;
+                String s = "";
+                switch (selectedFigure.FigureType)
+                {
+                    case Figure.Type.anubis: s = hints[2]; break;
+                    case Figure.Type.pharaoh: s = hints[0]; break;
+                    case Figure.Type.pyramid: s = hints[3]; break;
+                    case Figure.Type.scarab: s = hints[1]; break;
+                    case Figure.Type.sphinx: s = hints[4]; break;
+                }
+
+                return s;
+
+            }
+            private set { }
+        }
+
+        String[] hints = {
+@"Фараон-ключевая игровая фигура,
+за уничтожение вражеского фараона
+присуждается победа, 
+за потерю собственного-поражение.",
+@"Скарабей-воин-диверсант. 
+Отражает любые лучи света,
+а также занимает позиции соседней
+пирамиды или скарабея.",
+@"Анубис-личный охранник фараона. 
+Блокирует луч грудью, но уязвим
+с флангов и тыла.",
+@"Пирамида-пешка фараона. 
+Отражает луч лицевой стороной, 
+но уязвима к атакам с флангов.",
+@"Сфинкс-источник луча света. 
+Невосприимчив к вражескому свету. 
+Способен изменять вектор атаки,
+однако немобилен."
+                        };
+
+
+        public int CurrentPlayer { get; private set; }
         Ray r;
 
         public Ray RayLight { get { return r; } private set { } }
@@ -126,8 +169,9 @@ namespace EgyptLazerGame.Classes
         /// </summary>
         /// <param name="dir"></param>
         /// <returns>конец игры?</returns>
-        public bool Turn()
+        public bool Turn(out int looserid)
         {
+            looserid = -1;
             if (StepType == FigureStepType.Move)
             {
                 if (selectedFigure.FigureType == Figure.Type.scarab)
@@ -151,7 +195,11 @@ namespace EgyptLazerGame.Classes
             if (sph == null) throw new ArgumentNullException();
             r = new Ray(sph.Position, sph.MoveDirection);
             r.Move();
-            if (r.IsGameOver) return true;
+            if (r.IsGameOver)
+            {
+                looserid= r.LooserId;
+                return true;
+            }
 
             ++CurrentPlayer;
             CurrentPlayer %= 2;
