@@ -174,6 +174,14 @@ namespace EgyptLazerGame.Classes.XNA
             return obj;
         }
 
+        public Vector2 getRandomDirectionPoint()
+        {
+            Vector2 v = Vector2.Zero;
+            if (lBtnDirection.Count > 0)
+                v = lBtnDirection[GameClass.random.Next(0, lBtnDirection.Count)].Position;
+            return v;
+        }
+
         public void Input(Vector2? SelectedFigurePos, Vector2 msPosition)
         {
 

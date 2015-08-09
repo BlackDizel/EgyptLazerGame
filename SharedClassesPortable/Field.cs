@@ -44,7 +44,7 @@ namespace EgyptLazerGame.Classes
 @"Скарабей-воин-диверсант. 
 Отражает любые лучи света,
 а также занимает позиции соседней
-пирамиды или скарабея.",
+пирамиды или анубиса.",
 @"Анубис-личный охранник фараона. 
 Блокирует луч грудью, но уязвим
 с флангов и тыла.",
@@ -100,6 +100,16 @@ namespace EgyptLazerGame.Classes
         {
             var f = (from c in figures where c.Position == pos && c.PlayerID == CurrentPlayer select c).FirstOrDefault();
             if (f != null) selectedFigure = f;
+        }
+
+        private Random random = new Random();
+        public Point getRandomFigurePosition(int playerId)
+        {
+            Figure f = figures[0];
+            while (f.PlayerID != playerId)
+                f = figures[random.Next(0, figures.Count)];
+
+            return f.Position;        
         }
 
         public void SetDirection(CellObject.Direction dir)

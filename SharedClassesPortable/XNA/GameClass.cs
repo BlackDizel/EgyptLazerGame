@@ -20,8 +20,9 @@ namespace EgyptLazerGame.Classes.XNA
         public MouseState oldMS;
         KeyboardState oldKS;
         bool isGameOver = false;
-        int winnerId=-1;
+        int winnerId = -1;
 
+        public static Random random = new Random();
         public static int CellSize = 100;
 
         public GameClass(Game game)
@@ -70,10 +71,82 @@ namespace EgyptLazerGame.Classes.XNA
             base.Update(gameTime);
 
             ui.Update(gameTime);
-            Input();
+
+            if (field.CurrentPlayer == 0)
+                Input(gameTime);
+            else
+            {
+                if (!isGameOver)
+                {
+                    II(gameTime);
+                }
+            }
         }
 
-        void Input()
+        double iiDelay;
+        void II(GameTime gameTime)
+        {
+            Vector2 pos = Vector2.Zero;
+            switch (ui.UIAction)
+            {
+                case UI.Action.SelectFigure:
+                    if (!field.IsFigureSelected())
+                    {
+                        if (iiDelay < gameTime.TotalGameTime.TotalMilliseconds)
+                            pos = PointConversion.toVector2(field.getRandomFigurePosition(1)) * CellSize;
+                    }
+                    else
+                    {
+                        pos = ui.getRandomDirectionPoint() * CellSize;
+                        if (pos == Vector2.Zero)
+                            pos = new Vector2(11, 4) * CellSize;
+                    }
+                    break;
+                case UI.Action.Move:
+                    //if (field.StepType == Field.FigureStepType.None)
+
+                    //else
+                    pos = new Vector2(11, 6) * CellSize;
+                    break;
+                case UI.Action.Rotate: break;
+                case UI.Action.Turn: break;
+            }
+
+            if (field.IsFigureSelected())
+                ui.Input(PointConversion.toVector2(field.SelectedFigurePosition()), pos);
+            else
+                ui.Input(null, pos);
+
+            switch (ui.UIAction)
+            {
+                case UI.Action.Turn:
+                    if (field.IsFigureSelected() && field.StepType != Field.FigureStepType.None)
+                    {
+                        isGameOver = field.Turn(out winnerId);
+                        winnerId = (winnerId + 1) % 2;
+                        ui.clearDirections();
+                    }
+                    break;
+                case UI.Action.SelectFigure:
+                    field.SetSelectedFigure(PointConversion.toPoint(pos / CellSize));
+                    if (field.IsFigureSelected())
+                    {
+                        var dirs = field.IsDirectionsAvailableForSelectedFigure();
+                        ui.SetControlMovePos(PointConversion.toVector2(field.SelectedFigurePosition()), dirs);
+                    }
+                    break;
+                case UI.Action.Rotate:
+                    field.StepType = Field.FigureStepType.Rotate;
+                    field.IsClockwiseRotation = ui.IsClockwise;
+                    break;
+                case UI.Action.Move:
+                    field.StepType = Field.FigureStepType.Move;
+                    field.SetDirection(ui.direction);
+                    break;
+            }
+        }
+
+        void Input(GameTime gameTime)
         {
             KeyboardState state = Keyboard.GetState();
 
@@ -102,6 +175,7 @@ namespace EgyptLazerGame.Classes.XNA
                                 isGameOver = field.Turn(out winnerId);
                                 winnerId = (winnerId + 1) % 2;
                                 ui.clearDirections();
+                                iiDelay = gameTime.TotalGameTime.TotalMilliseconds + 3000;
                             }
                             break;
                         case UI.Action.SelectFigure:
